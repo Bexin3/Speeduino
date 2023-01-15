@@ -100,6 +100,16 @@ void AttachADC(int ADCpin, bool IDACRefon, int gain) {
 }
 
 
+void FastAttachADC(int ADCpin, bool IDACRefon) {
+
+
+  if (IDACRefon) {
+    ADC->INPUTCTRL.reg = ADC_INPUTCTRL_GAIN(1) | ADC_INPUTCTRL_MUXNEG(0) | ADC_INPUTCTRL_MUXPOS(ADCpin);
+  } else {
+    ADC->INPUTCTRL.reg = ADC_INPUTCTRL_GAIN(15) | ADC_INPUTCTRL_MUXNEG_GND | ADC_INPUTCTRL_MUXPOS(ADCpin);
+  };
+}
+
 
 void AnalogBegin(int resolution, bool midphase, bool Freerun) {
 
