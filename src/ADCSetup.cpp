@@ -1,8 +1,9 @@
 #include "ADCSetup.h"
 
+bool mp = 0;
+int16_t Analog = 0;
 
-
-void ADCSetup(bool DacRef, int Res, int Samp, int ADCClk, int ADCDiv, int BaseV, bool Freerun) {
+void ADCSetup(bool DacRef, int Res, int Samp, int ADCClk, int ADCDiv, int BaseV, bool Freerun, bool PreDiv) {
 
   genericClockSetup(ADCClk, ADCDiv);        //Sets up ADC clock and divides it
   AttachClock(ADCClk, 0x1E); 
@@ -28,21 +29,31 @@ void ADCSetup(bool DacRef, int Res, int Samp, int ADCClk, int ADCDiv, int BaseV,
    since VCCA is typically 3.3v, this is 1.65v.
 */
   ADC->REFCTRL.reg = ADC_REFCTRL_REFSEL_INTVCC1;
-
+  
 
 
 
   /* Sets resolution and uses smallest possible divider so cDIV has the most control */
-
+if (PreDiv) {
   if (Res == 8) {
+    ADC->CTRLB.reg = ADC_CTRLB_PRESCALER_DIV16 | ADC_CTRLB_RESSEL_8BIT;
+  } else if (Res == 10) {
+    ADC->CTRLB.reg = ADC_CTRLB_PRESCALER_DIV16 | ADC_CTRLB_RESSEL_10BIT;
+  } else if (Res == 12) {
+    ADC->CTRLB.reg = ADC_CTRLB_PRESCALER_DIV16 | ADC_CTRLB_RESSEL_12BIT;
+  } else {
+    Serial.println("Unsupported resolution, change the value res to 8 10 or 12");
+  };
+} else {
+    if (Res == 8) {
     ADC->CTRLB.reg = ADC_CTRLB_PRESCALER_DIV4 | ADC_CTRLB_RESSEL_8BIT;
   } else if (Res == 10) {
     ADC->CTRLB.reg = ADC_CTRLB_PRESCALER_DIV4 | ADC_CTRLB_RESSEL_10BIT;
   } else if (Res == 12) {
     ADC->CTRLB.reg = ADC_CTRLB_PRESCALER_DIV4 | ADC_CTRLB_RESSEL_12BIT;
   } else {
-    Serial.println("Unsupported resolution, change the value res to 8 10 or 12");
-  };
+    Serial.println("Unsupported resolution, change the value res to 8 10 or 12"); }
+};
   /*  Allows for Diff mode so values can be negative  */
   if (DacRef) {
     ADC->CTRLB.bit.DIFFMODE = 1;
@@ -89,37 +100,34 @@ void AttachADC(int ADCpin, int gain, bool IDACRefon) {
 }
 
 
+
 void AnalogBegin(int resolution, bool midphase, bool Freerun) {
 
-  ADCSetup(midphase, resolution, 1, 3, 1, 512, 0);
+  ADCSetup(midphase, resolution, 1, 3, 5, 512, Freerun, midphase);
+  mp = midphase;
 
-  if (resolution == 8) {
-    ADC->CTRLB.reg = ADC_CTRLB_PRESCALER_DIV16 | ADC_CTRLB_RESSEL_8BIT;
-  } else if (resolution == 10) {
-    ADC->CTRLB.reg = ADC_CTRLB_PRESCALER_DIV16 | ADC_CTRLB_RESSEL_10BIT;
-  } else if (resolution == 12) {
-    ADC->CTRLB.reg = ADC_CTRLB_PRESCALER_DIV16 | ADC_CTRLB_RESSEL_12BIT;
-  } else {
-    Serial.println("Unsupported resolution, change the value res to 8 10 or 12");
-  };
-  while (ADC->STATUS.bit.SYNCBUSY) {};
-  ADC->INPUTCTRL.reg = ADC_INPUTCTRL_GAIN(15) | ADC_INPUTCTRL_MUXNEG_GND;
 }
 
-
-
+int AnalogCollect() {
+ADC->SWTRIG.bit.START = true;           //Start reading again
+while (ADC->INTFLAG.reg == ADC_INTFLAG_RESRDY) {};  //Wait for new analog value to be ready
+Analog = ADC->RESULT.reg;
+return(Analog); 
+}
 
 
 int FastAnalogRead(int pin) {
+if (mp) {
+ADC->INPUTCTRL.reg = ADC_INPUTCTRL_MUXPOS(pin) | ADC_INPUTCTRL_GAIN(1) | ADC_INPUTCTRL_MUXNEG(0);
+} else {
 ADC->INPUTCTRL.reg = ADC_INPUTCTRL_MUXPOS(pin) | ADC_INPUTCTRL_GAIN(15) | ADC_INPUTCTRL_MUXNEG_GND;
+};
 //while (ADC->STATUS.bit.SYNCBUSY) {};
 ADC->SWTRIG.bit.START = true;           //Start reading again
-ADC->INTFLAG.reg = ADC_INTFLAG_RESRDY;  //Wait for new analog value to be ready
-return(ADC->RESULT.reg);               //Write it down
+while (ADC->INTFLAG.reg == ADC_INTFLAG_RESRDY) {};  //Wait for new analog value to be ready
+Analog = ADC->RESULT.reg;
+return(Analog);               //Write it down
 }
-
-
-
 
 
 
