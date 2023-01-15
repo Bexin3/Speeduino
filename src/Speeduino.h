@@ -26,6 +26,7 @@ void SetupPWMPins(uint32_t ulPin, EPioType ulPeripheral);
 void GCLKDIVCalc(float Frequency); 
 void Prescaler(float Frequency);
 void interset(uint32_t _tcNum, uint8_t _tcChannel);
+void PWMFrequency(int pin, float frequency);
 
 
 
