@@ -113,7 +113,7 @@ void FastAttachADC(int ADCpin, bool IDACRefon) {
 
 void AnalogBegin(int resolution, bool midphase, bool Freerun) {
 
-  ADCSetup(midphase, resolution, 1, 3, 5, 512, Freerun, 1);
+  ADCSetup(midphase, resolution, 1, 3, 1, 512, Freerun, 1);
   mp = midphase;
 
 }
