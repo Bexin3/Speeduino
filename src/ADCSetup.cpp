@@ -89,9 +89,9 @@ void AttachADC(int ADCpin, int gain, bool IDACRefon) {
 }
 
 
-void AnalogBegin(int resolution, bool Freerun) {
+void AnalogBegin(int resolution, bool midphase, bool Freerun) {
 
-  ADCSetup(0, resolution, 1, 3, 1, 0, 0);
+  ADCSetup(midphase, resolution, 1, 3, 1, 512, 0);
 
   if (resolution == 8) {
     ADC->CTRLB.reg = ADC_CTRLB_PRESCALER_DIV16 | ADC_CTRLB_RESSEL_8BIT;
