@@ -14,6 +14,7 @@ void Prescaler(float Frequency);
 void interset(uint32_t _tcNum, uint8_t _tcChannel);
 void genericClockSetup(int clk, int dFactor);
 void AttachClock(int clk, int clkid);
+void PWMFrequency(int pin, float frequency);
 
 
 
