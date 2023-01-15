@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 
-void ADCSetup(bool DacRef, int Res, int Samp, int ADCClk, int ADCDiv, int BaseV, bool Freerun);
+void ADCSetup(bool DacRef, int Res, int Samp, int ADCClk, int ADCDiv, int BaseV, bool Freerun, bool PreDiv);
 void genericClockSetup(int clk, int dFactor);
 void AttachClock(int clk, int clkid);
 void AttachADC(int ADCpin, int gain, bool IDACRefon);  
@@ -27,7 +27,7 @@ void GCLKDIVCalc(float Frequency);
 void Prescaler(float Frequency);
 void interset(uint32_t _tcNum, uint8_t _tcChannel);
 void PWMFrequency(int pin, float frequency);
-
+int AnalogCollect();
 
 
 #endif
