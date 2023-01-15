@@ -79,7 +79,7 @@ if (PreDiv) {
 
 
 
-void AttachADC(int ADCpin, int gain, bool IDACRefon) {
+void AttachADC(int ADCpin, bool IDACRefon, int gain) {
 
 
   if (IDACRefon) {
