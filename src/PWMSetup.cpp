@@ -13,7 +13,8 @@ uint8_t _tcChannel;
 bool EnablePWMInt;
 
 void PWMBegin(int pin, float frequency) {
-PWMSetup(pin, frequency, 4, 0);
+if (frequency < 1) {frequency = 1;};
+PWMSetup(pin, frequency, 8, 0);
 }
 
 void PWMDuty(int pin, float dutycycle) {
@@ -39,6 +40,54 @@ if (_tcNum >= TCC_INST_NUM) {
 
 
 };
+
+}
+
+void PWMFrequency(int pin, float frequency) {
+
+
+PinDescription _pinDesc = g_APinDescription[pin];
+
+_tcNum = GetTCNumber(_pinDesc.ulPWMChannel);
+_tcChannel = GetTCChannelNumber(_pinDesc.ulPWMChannel);
+
+
+
+if (frequency < 1) {frequency = 1;};
+Prescaler(frequency);
+
+
+
+GCLK->GENDIV.bit.DIV = GCLKDIV;
+
+
+int period = int((48000000 / frequency / PRESVAL) - 1);
+
+
+if (_tcNum >= TCC_INST_NUM) {
+    // Convert to 8-bit
+
+    // -- Configure TC
+
+Tc *TCx = (Tc *)GetTC(_pinDesc.ulPWMChannel);
+TCx->COUNT8.CTRLA.bit.ENABLE = 0;
+TCx->COUNT8.CTRLA.bit.PRESCALER = PRESC;
+TCx->COUNT8.PER.reg = (uint8_t)period;   
+TCx->COUNT8.CTRLA.bit.ENABLE = 1;
+
+
+} else {
+
+
+   
+Tcc *TCCx = (Tcc *)GetTC(_pinDesc.ulPWMChannel);
+    TCCx->CTRLA.bit.ENABLE = 0;
+TCCx->CTRLA.bit.PRESCALER = PRESC;
+TCCx->PER.reg = period;
+    TCCx->CTRLA.bit.ENABLE = 1;
+
+};
+
 
 }
 
@@ -243,8 +292,5 @@ void Prescaler(float Frequency) {
     PRESVAL = 1;
   };
 }
-
-
-
 
 
