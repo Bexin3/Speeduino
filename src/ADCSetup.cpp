@@ -1,7 +1,7 @@
 #include "ADCSetup.h"
 
 bool mp = 0;
-int16_t Analog = 0;
+int16_t anv = 0;
 
 void ADCSetup(bool DacRef, int Res, int Samp, int ADCClk, int ADCDiv, int BaseV, bool Freerun, bool PreDiv) {
 
@@ -111,8 +111,8 @@ void AnalogBegin(int resolution, bool midphase, bool Freerun) {
 int AnalogCollect() {
 ADC->SWTRIG.bit.START = true;           //Start reading again
 while (ADC->INTFLAG.reg == ADC_INTFLAG_RESRDY) {};  //Wait for new analog value to be ready
-Analog = ADC->RESULT.reg;
-return(Analog); 
+anv = ADC->RESULT.reg;
+return(anv); 
 }
 
 
@@ -125,8 +125,8 @@ ADC->INPUTCTRL.reg = ADC_INPUTCTRL_MUXPOS(pin) | ADC_INPUTCTRL_GAIN(15) | ADC_IN
 //while (ADC->STATUS.bit.SYNCBUSY) {};
 ADC->SWTRIG.bit.START = true;           //Start reading again
 while (ADC->INTFLAG.reg == ADC_INTFLAG_RESRDY) {};  //Wait for new analog value to be ready
-Analog = ADC->RESULT.reg;
-return(Analog);               //Write it down
+anv = ADC->RESULT.reg;
+return(anv);               //Write it down
 }
 
 
