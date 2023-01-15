@@ -11,5 +11,5 @@ AnalogBegin(); - starts the ADC and attaches it to clock number 3. You can add o
 AnalogRead(pin); - Attaches the Analog pin and reads it, returns an integer.
 
 PWMBegin(pin, frequency) - begins running a pin at a specified frequency while attaching it to clock 8, minimum is 1 hz
-PWMDuty(pin, dutycycle) - Sets the duty cycle at a specified number
+PWMDuty(pin, dutycycle) - Sets the duty cycle at a specified number, in fractions.
 PWMFrequency(pin, frequency) - changes the frequency, minimum 1 hz
