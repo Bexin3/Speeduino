@@ -7,7 +7,7 @@ AnalogRead shouldnt take more than ~ 4us
 Function descriptions and time they take:
 Simplified:
 
-AnalogBegin(); - starts the ADC and attaches it to clock number 3. You can add one number inside to set resolution, deffault is 12 bit, possible are 8 10 and 12, and after if you add 1 ADC will run in a freerun mode - it will keep taking reads again and again. ~ 30us
+AnalogBegin(); - starts the ADC and attaches it to clock number 3. You can add one number inside to set resolution, deffault is 12 bit, possible are 8 10 and 12, then if you add one it will enable mode that centers values at half of the supply voltage, which now appears at pin A0, so you have negative and positive values, and after if you add 1 ADC will run in a freerun mode - it will keep taking reads again and again. ~ 30us
 
 FastAnalogRead(pin); - Attaches the Analog pin and reads it, returns an integer. ~ 3us
 
