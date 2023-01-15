@@ -28,6 +28,7 @@ void Prescaler(float Frequency);
 void interset(uint32_t _tcNum, uint8_t _tcChannel);
 void PWMFrequency(int pin, float frequency);
 int AnalogCollect();
+void FastAttachADC(int ADCpin = 0, bool IDACRefon = 0);
 
 
 #endif
