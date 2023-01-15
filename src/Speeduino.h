@@ -9,7 +9,7 @@ void AttachClock(int clk, int clkid);
 void AttachADC(int ADCpin, int gain, bool IDACRefon);  
 void GainINIT(int Gain); 
 void DACSetup(int BaseV);
-void AnalogBegin(int resolution = 12, bool Freerun = 0);
+void AnalogBegin(int resolution = 12, bool midphase = 0, bool Freerun = 0);
 int FastAnalogRead(int pin);
 void interset(uint32_t _tcNum, uint8_t _tcChannel);
 void TCC0_Handler();
