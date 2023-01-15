@@ -36,7 +36,7 @@ void setup() {
 
   Range = (maxv - minv);
   Period = PWMSetup(PWMpin, Frequency, PWMClk, 1);  //Sets up PWM
-  ADCSetup(IDACRef, res, Samples, ADCClk, ADCDiv, BaseV, 0);                                       
+  ADCSetup(IDACRef, res, Samples, ADCClk, ADCDiv, BaseV, 0, 0);                                       
   AttachADC(ADCpin, gain, IDACRef);                                   
 
                    
