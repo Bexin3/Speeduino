@@ -1,15 +1,19 @@
 Compatible with SAMD21, more description will be added soon, check examples to use the code. Its still in alpha.
 Tested with Arduino Zero and Seeduino Xiao m0+
-PWMDuty shouldnt take more than ~ 8us 
-AnalogRead shouldnt take more than ~ 4us
-
+With centered analog read you can have relative ground on A0 which is half of supply voltage to compare against.
 
 Function descriptions and time they take:
 Simplified:
 
-AnalogBegin(); - starts the ADC and attaches it to clock number 3. You can add one number inside to set resolution, deffault is 12 bit, possible are 8 10 and 12, then if you add one it will enable mode that centers values at half of the supply voltage, which now appears at pin A0, so you have negative and positive values, and after if you add 1 ADC will run in a freerun mode - it will keep taking reads again and again. ~ 30us
+AnalogBegin(); - starts the ADC and attaches it to clock number 3. You can add one number inside to set resolution, deffault is 12 bit, possible are 8 10 and 12, then if you add one it will enable mode that centers values at half of the supply voltage, which now appears at pin A0, so you have negative and positive values, and after if you add 1 ADC will run in a freerun mode - it will keep taking reads again and again. Full form is AnalogBegin(Resolution, Centering, Freerun) ~ 30us
 
 FastAnalogRead(pin); - Attaches the Analog pin and reads it, returns an integer. ~ 3us
+
+AttachADC(pin, centering, gain) - Attaches to an analog pin and sets gain ~ 20us
+
+FastAttachADC(pin, centering) - Attaches to an analog pin ~ 3us, less than FastAnalogRead
+
+AnalogCollect() - Reads and collects an analog value from last attached pin ~ 3us, but bit less than FastAnalogRead
 
 
 PWMBegin(pin, frequency) - begins running a pin at a specified frequency while attaching it to clock 8, minimum is 1 hz - calls PWMSetup. ~ 87us
