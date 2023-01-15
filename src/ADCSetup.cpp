@@ -89,11 +89,23 @@ void AttachADC(int ADCpin, int gain, bool IDACRefon) {
 }
 
 
-
 void AnalogBegin(int resolution, bool Freerun) {
-  ADCSetup(0, resolution, 1, 3, 5, 0, 0);
+
+  ADCSetup(0, resolution, 1, 3, 1, 0, 0);
+
+  if (resolution == 8) {
+    ADC->CTRLB.reg = ADC_CTRLB_PRESCALER_DIV16 | ADC_CTRLB_RESSEL_8BIT;
+  } else if (resolution == 10) {
+    ADC->CTRLB.reg = ADC_CTRLB_PRESCALER_DIV16 | ADC_CTRLB_RESSEL_10BIT;
+  } else if (resolution == 12) {
+    ADC->CTRLB.reg = ADC_CTRLB_PRESCALER_DIV16 | ADC_CTRLB_RESSEL_12BIT;
+  } else {
+    Serial.println("Unsupported resolution, change the value res to 8 10 or 12");
+  };
+  while (ADC->STATUS.bit.SYNCBUSY) {};
   ADC->INPUTCTRL.reg = ADC_INPUTCTRL_GAIN(15) | ADC_INPUTCTRL_MUXNEG_GND;
 }
+
 
 
 
