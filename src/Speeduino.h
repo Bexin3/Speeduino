@@ -4,7 +4,7 @@
 #include <Arduino.h>
 
 void ADCSetup(bool DacRef, int Res, int Samp, int ADCClk, int ADCDiv, int BaseV, bool Freerun, bool PreDiv);
-void genericClockSetup(int clk, int dFactor);
+void genericClockSetup(int clk, int dFactor, bool DoubleSpeed);
 void AttachClock(int clk, int clkid);
 void AttachADC(int ADCpin = 0, bool IDACRefon = 0, int gain = 1);  
 void GainINIT(int Gain); 

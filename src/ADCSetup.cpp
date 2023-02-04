@@ -5,7 +5,7 @@ int16_t anv = 0;
 
 void ADCSetup(bool DacRef, int Res, int Samp, int ADCClk, int ADCDiv, int BaseV, bool Freerun, bool PreDiv) {
 
-  genericClockSetup(ADCClk, ADCDiv);        //Sets up ADC clock and divides it
+  genericClockSetup(ADCClk, ADCDiv, 0);        //Sets up ADC clock and divides it
   AttachClock(ADCClk, 0x1E); 
 
   if (DacRef) {

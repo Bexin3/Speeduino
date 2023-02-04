@@ -53,7 +53,7 @@ _tcChannel = GetTCChannelNumber(_pinDesc.ulPWMChannel);
 
 
 
-if (frequency < 1) {frequency = 1;};
+if (frequency < 2) {frequency = 2;};
 Prescaler(frequency);
 
 
@@ -61,7 +61,7 @@ Prescaler(frequency);
 GCLK->GENDIV.bit.DIV = GCLKDIV;
 
 
-int period = int((48000000 / frequency / PRESVAL) - 1);
+int period = int((96000000 / frequency / PRESVAL) - 1);
 
 
 if (_tcNum >= TCC_INST_NUM) {
@@ -104,12 +104,12 @@ _tcChannel = GetTCChannelNumber(_pinDesc.ulPWMChannel);
 
 
   GCLKDIVCalc(Frequency);
-  genericClockSetup(CLKID, GCLKDIV);  //Sets up PWM clock and divides it
+  genericClockSetup(CLKID, GCLKDIV, 1);  //Sets up PWM clock and divides it
   AttachClock(CLKID, int(26 + (_tcNum / 2)));
   Prescaler(Frequency);
 
 
-  int period = int((48000000 / Frequency / PRESVAL / GCLKDIV) - 1);
+  int period = int((96000000 / Frequency / PRESVAL / GCLKDIV) - 1);
 
   if (EnablePWMInt) {
     interset(_tcNum, _tcChannel);
@@ -258,13 +258,13 @@ void SetupPWMPins(uint32_t ulPin, EPioType ulPeripheral) {  //Set up PWM pins
 /*  Sets up interrupts based on the timer channel  */
 
 void GCLKDIVCalc(float Frequency) {
-  GCLKDIV = int(1.44 / Frequency);
+  GCLKDIV = int(2.88 / Frequency);
   if (GCLKDIV < 1) { GCLKDIV = 1; };
   if (GCLKDIV > 255) { GCLKDIV = 255; };
 }
 
 void Prescaler(float Frequency) {
-  PRESCALC = (1500 / Frequency);
+  PRESCALC = (3000 / Frequency);
 
   if (PRESCALC > 256) {
     PRESC = 7;

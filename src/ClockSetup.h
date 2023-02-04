@@ -4,7 +4,7 @@
 #include <Arduino.h>
 
 
-void genericClockSetup(int clk, int dFactor);
+void genericClockSetup(int clk, int dFactor, bool DoubleSpeed);
 void AttachClock(int clk, int clkid);
  
 
