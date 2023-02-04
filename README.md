@@ -22,6 +22,6 @@ PWMDuty(pin, dutycycle) - Sets the duty cycle at a specified number, in fraction
 
 PWMFrequency(pin, frequency) - changes the frequency, minimum 2 hz, if the pin previously had lower frequency selected may cause issues. ~40us
 
-PWMSetup(pin, frequency, clock, Interrupts) - enables PWM, at a specidied pin, frequency which can go down to 0.00281 but it changes clock divisions, use clock 3-8. Enabling interrupts will make it call to Tch(); where you return duty cycle so it changes every cycle. ~ 124us, ~ 80us with frequency above 1hz
+PWMSetup(pin, frequency, clock, Interrupts) - enables PWM, at a specidied pin, frequency which can go down to 0.00562 but it changes clock divisions, use clock 3-8. Enabling interrupts will make it call to Tch(); where you return duty cycle so it changes every cycle. ~ 124us, ~ 80us with frequency above 1hz
 
 
