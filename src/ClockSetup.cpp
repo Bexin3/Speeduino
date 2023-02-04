@@ -2,19 +2,21 @@
 
 void genericClockSetup(int clk, int dFactor, bool DoubleSpeed) {
     
+
 if (DoubleSpeed) {
 
-GCLK->CLKCTRL.reg = GCLK_CLKCTRL_CLKEN | GCLK_CLKCTRL_GEN_GCLK0 | GCLK_CLKCTRL_ID(1);
-while (GCLK->STATUS.bit.SYNCBUSY);
-
-// Set DPLL ratio to 1 MHz * (95 + 1) = 96 MHz
-SYSCTRL->DPLLRATIO.reg = SYSCTRL_DPLLRATIO_LDRFRAC(0) | SYSCTRL_DPLLRATIO_LDR(95);
-
-// Configure DPLL to disregard phase lock and select GCLK as source
-SYSCTRL->DPLLCTRLB.reg = SYSCTRL_DPLLCTRLB_LBYPASS | SYSCTRL_DPLLCTRLB_WUF | SYSCTRL_DPLLCTRLB_REFCLK(SYSCTRL_DPLLCTRLB_REFCLK_GCLK_Val);
-
-// Enable DPLL
-SYSCTRL->DPLLCTRLA.reg |= SYSCTRL_DPLLCTRLA_ENABLE;
+    GCLK->CLKCTRL.reg = GCLK_CLKCTRL_CLKEN |         // Enable the generic clock
+                        GCLK_CLKCTRL_GEN_GCLK1 |     // Select GCLK1 using either external XOSC32K or internal OSC32K oscillator depending on the board
+                        //GCLK_CLKCTRL_GEN_GCLK2 |     // Select GCLK2 using the OSCULP32K ultra low power 32k oscillator
+                        GCLK_CLKCTRL_ID_FDPLL;       // Connect GCLK1 to GCLK_DPLL input
+    
+    SYSCTRL->DPLLCTRLB.reg = SYSCTRL_DPLLCTRLB_REFCLK_GCLK;     // Select GCLK_DPLL as the clock source
+    
+    SYSCTRL->DPLLRATIO.reg = SYSCTRL_DPLLRATIO_LDRFRAC(11) |    // Generate a 96MHz DPLL clock source from the external 32kHz crystal
+                             SYSCTRL_DPLLRATIO_LDR(2928);       // Frequency = 32.768kHz * (2928 + 1 + 11/16) = 96MHz
+    
+    SYSCTRL->DPLLCTRLA.reg = SYSCTRL_DPLLCTRLA_ENABLE;          // Enable the Digital Phase Locked Loop (DPLL)
+    while (!SYSCTRL->DPLLSTATUS.bit.LOCK);                      // Wait for the DPLL to achieve lock
 
 
 
@@ -55,7 +57,5 @@ SYSCTRL->DPLLCTRLA.reg |= SYSCTRL_DPLLCTRLA_ENABLE;
 void AttachClock(int clk, int clkid) {
    GCLK->CLKCTRL.reg = GCLK_CLKCTRL_ID(clkid) | GCLK_CLKCTRL_CLKEN | GCLK_CLKCTRL_GEN(clk);  //Attacch clock
 }
-
-
 
 
