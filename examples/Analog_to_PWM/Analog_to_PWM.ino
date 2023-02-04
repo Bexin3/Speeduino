@@ -3,7 +3,7 @@
 #include "Speeduino.h"
 
 
-const int ADCpin = 2;  //Pin for ADC, 0 cant be used in IDACRed mode as it has the DAC tied to it. AO can be used for ref GND for sound card with sound pin to ADCpin. On zero, 2 stands for A1
+const int ADCpin = A2;  //Pin for ADC, 0 cant be used in IDACRed mode as it has the DAC tied to it. AO can be used for ref GND for sound card with sound pin to ADCpin. On zero, 2 stands for A1
 int PWMpin = 13;          //PWM pin, 13 is usually connected to LED so you can see it working.
 
 const float Frequency = 10.0f;  //PWM frequency, higher the frequency lower resolution. Wont work below 0.00281 hz wont work
