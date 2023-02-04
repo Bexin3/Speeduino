@@ -12,7 +12,7 @@ void setup() {
 
 /*  Repeating code  */
 void loop() {
-  Serial.println(FastAnalogRead(0));
+  Serial.println(FastAnalogRead(A0));
 }
 
 
