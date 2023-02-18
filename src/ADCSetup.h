@@ -13,5 +13,7 @@ void DACSetup(int BaseV);
 void AnalogBegin(int resolution = 12, bool midphase = 0, bool Freerun = 0);
 int FastAnalogRead(int pin);
 int AnalogCollect();
+void CompAttachADC(int ADCpin = 0, int Gain = 1, int NegatPin = 127);
+void AnalogBeginOsc(int dividor = 3);
   
 #endif

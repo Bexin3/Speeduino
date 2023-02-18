@@ -29,6 +29,8 @@ void interset(uint32_t _tcNum, uint8_t _tcChannel);
 void PWMFrequency(int pin, float frequency);
 int AnalogCollect();
 void FastAttachADC(int ADCpin = 0, bool IDACRefon = 0);
+void CompAttachADC(int ADCpin = 0, int Gain = 1, int NegatPin = 127);
+void AnalogBeginOsc(int dividor = 3);
 
 
 #endif

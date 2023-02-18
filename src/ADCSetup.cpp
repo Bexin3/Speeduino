@@ -62,6 +62,7 @@ if (PreDiv) {
   /* Sampling time */
   ADC->SAMPCTRL.reg = log2(Samp);
 
+
   ADC->CTRLB.bit.FREERUN = Freerun;
 
   while (ADC->STATUS.bit.SYNCBUSY) {};
@@ -83,7 +84,7 @@ void AttachADC(int ADCpin, bool IDACRefon, int gain) {
 
 
   if (IDACRefon) {
-    if (gain < 32) { gain = 2 * gain; };};
+    if (gain < 32) { gain = gain; };};
 
   if (gain == 1) {
     gain = 15;
@@ -99,6 +100,19 @@ void AttachADC(int ADCpin, bool IDACRefon, int gain) {
   };
 }
 
+void CompAttachADC(int ADCpin, int Gain, int NegatPin) {
+
+  if (Gain == 1) {
+    Gain = 15;
+  } else {
+    Gain = log2(Gain / 2);
+  }
+   if (NegatPin == 127) {
+    ADC->INPUTCTRL.reg = ADC_INPUTCTRL_GAIN(Gain) | ADC_INPUTCTRL_MUXNEG_GND | ADC_INPUTCTRL_MUXPOS(g_APinDescription[ADCpin].ulADCChannelNumber);
+   } else {
+    ADC->INPUTCTRL.reg = ADC_INPUTCTRL_GAIN(Gain) | ADC_INPUTCTRL_MUXNEG(g_APinDescription[NegatPin].ulADCChannelNumber) | ADC_INPUTCTRL_MUXPOS(g_APinDescription[ADCpin].ulADCChannelNumber);
+   };
+}
 
 void FastAttachADC(int ADCpin, bool IDACRefon) {
 
@@ -142,3 +156,8 @@ return(anv);               //Write it down
 
 
 
+void AnalogBeginOsc(int dividor) {
+  
+  ADCSetup(0, 12, 1, 3, dividor, 512, 0, 0);
+
+}
