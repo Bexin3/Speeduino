@@ -25,3 +25,4 @@ PWMFrequency(pin, frequency) - changes the frequency, minimum 2 hz, if the pin p
 PWMSetup(pin, frequency, clock, Interrupts) - enables PWM, at a specidied pin, frequency which can go down to 0.00562 but it changes clock divisions, use clock 3-8. Enabling interrupts will make it call to Tch(); where you return duty cycle so it changes every cycle. ~ 124us, ~ 80us with frequency above 1hz
 
 
+Osciloscope examples - can make a 10hz - 100khz up to 350ksps osciloscope out of your arduino.
